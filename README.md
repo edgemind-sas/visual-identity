@@ -1,1 +1,1 @@
-# visual-identity
+# EdgeMind Visual Identity
