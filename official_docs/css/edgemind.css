@@ -28,6 +28,15 @@ body {
     color: #393939;
     background-color: #ffffff; }
 
+#content {
+  max-width: 1200px;
+  background-color: #ffffff;
+}
+
+p {
+  margin: 10px 0 0 0;
+}
+
 /*********************************************
  * Title slide
  *********************************************/
@@ -53,20 +62,29 @@ h1 {
 h2 {
     color: var(--primary-color);
     font-size: 120%;
+    margin: 40px 0 10px 0;
 }
 
 h3 {
   color: var(--secondary-color);
   font-size: 110%;
   font-weight: normal;
+  margin: 20px 0 10px 0;
 }
 
 
 h4 {
-  color: var(--secondary-color);
+  color: var(--quaternary-color);
   font-size: 100%;
   font-weight: normal;
+  margin: 10px 0 10px 0;
 }
+
+
+span[class^="section-number-"]:after {
+    content: '';
+}
+
 
 /*********************************************
  * Lists
@@ -96,8 +114,15 @@ dd {
  * Table
  *********************************************/
 table {
+    text-align: center;
     border: 1px solid black;
 }
+
+table.invisible {
+  margin-bottom: 0px;
+  border: 0px solid rgb(0 0 0 / 0%);
+}
+
 
 th {
   background-color: var(--secondary-color);
@@ -109,7 +134,8 @@ td {
 }
 
 th, td {
-    font-size: 90%;
+  font-size: 90%;
+  text-align: left;
 }
 
 /* Org-table */
@@ -117,9 +143,33 @@ th.org-left {
     text-align: left;
 }
 
-span[class^="section-number-"]:after {
-    content: '.';
+.invisible td.org-left  {
+  border: 0px;
+  padding: 0px;
+  font-size: 0pt;
+  background-color: rgb(0 0 0 / 0%);
 }
+
+
+caption {
+  font-style: normal;
+  text-align: center;
+  margin: 0px;
+  padding: 5px;
+}
+
+.invisible caption {
+  padding: 0px 0px 5px 0px;
+}
+
+.t-bottom {
+  font-style: normal;
+}
+
+.table-number {
+  font-weight: bold;
+}
+        
 
 /*********************************************
  * LINKS
@@ -136,6 +186,21 @@ a:hover {
   text-shadow: none;
   border: none; }
 
+
+/*********************************************
+ * Figures
+ *********************************************/
+
+.figure p {
+  font-style: normal;
+  text-align: center;
+  margin: 0px;
+  padding: 5px;
+}
+
+.figure-number {
+  font-weight: bold;
+}
 
 
 /*********************************************
