@@ -1,0 +1,498 @@
+# -*- coding: utf-8 -*-
+
+#+TITLE: EdgeMind's visual identity
+#+AUTHOR: Roland DONAT and Thomas FRIEDLHUBER
+
+:OPTIONS: 
+#+DRAWERS: OPTIONS CACHE MACROS
+#+STARTUP: content
+#+STARTUP: hidestars
+
+#+TODO: TODO(t) TOPREPARE(a) INPROGRESS(p) POSTPONED(r) WAITING(w) | DONE(d) CANCELLED(c)
+
+#+LANGUAGE: en
+#+OPTIONS: H:4 num:t toc:3 \n:nil @:t ::t |:t ^:{} f:t TeX:t author:t d:nil
+#+BIND: org-latex-table-scientific-notation "{%s}E{%s}"
+# #+BIND: org-latex-title-command ""
+:END:
+
+
+* Identité visuelle
+** DONE Créer l'identité visuelle d'EgdeMind [3/3]
+   CLOSED: [2014-05-12 lun. 15:23] DEADLINE: <2014-04-30 mer.>
+   CLOCK: [2014-05-21 mer. 15:16]--[2014-05-21 mer. 16:16] =>  1:00
+   CLOCK: [2014-03-18 mar. 14:25]--[2014-03-18 mar. 15:16] =>  0:51
+*** DONE Rédiger un cahier des charges pour logotype + charte graphique
+    CLOSED: [2014-03-29 sam. 11:03] DEADLINE: <2014-04-04 ven.>
+*** CANCELLED Rédiger un cahier des charges pour le design du site web vitrine
+    CLOSED: [2014-07-25 ven. 09:54] DEADLINE: <2014-07-31 jeu.>
+    CLOCK: [2014-03-24 lun. 20:10]--[2014-03-24 lun. 20:54] =>  0:44
+    CLOCK: [2014-03-17 lun. 11:05]--[2014-03-17 lun. 11:50] =>  0:45
+*** DONE Trouver un graphiste indépendant 
+    CLOSED: [2014-04-08 mar. 09:24] DEADLINE: <2014-04-02 mer.>
+**** DONE Rédiger un mail de contact type
+     CLOSED: [2014-03-24 lun. 20:20]
+    CLOCK: [2014-03-07 ven. 14:48]--[2014-03-07 ven. 15:15] =>  0:27
+
+Bonjour,
+
+Je vous contacte au sujet de l'identité visuelle de la société EdgeMind que nous avons créée avec
+mon associé en janvier 2014.
+
+Notre objectif est de fournir des conseils innovants et un service de développements
+informatiques spécialisés dans le domaine de la maîtrise des risques industriels.
+
+Nous cherchons actuellement un/une graphiste/webdesigner indépendant(e) afin de mettre au point l'identité
+visuelle de notre entreprise (logotype + charte graphique associée, carte de visite) dans un premier
+temps, puis de développer le design de son site web vitrine.
+
+J'aimerais donc m'entretenir avec vous afin que nous puissions discuter de nos besoins et de vos offres.
+
+J'attends de vos nouvelles.
+
+Bien cordialement,
+
+Roland Donat.
+
+**** DONE Contacter E-Dilik (http://www.e-dilik.com/index.php5)
+     CLOSED: [2014-03-24 lun. 20:20]
+
+
+* EdgeMind's color palette
+
+** GPL format
+Note : 
+cd /usr/share/inkscape/palettes
+sudo ln -fs /home/roland/Work/EdgeMind/Visual_identity/color_palettes/edgemind_palette.gpl edgemind_palette.gpl 
+
+#+HEADER: :padline no
+#+HEADER: :tangle ./color_palettes/edgemind_palette.gpl
+#+BEGIN_SRC org
+GIMP Palette
+Name: EMSVG
+ 
+239 123  38 EMOrange (#ef7b26ff)    
+ 31  65 109 EMBlue (#1f416dff)    
+201 212 230 EMGray (#c9d4e6ff)    
+191 135  64 EMBrown (#bf8740ff)    
+161   0  16 EMRed (#a10010ff)    
+ 76   0  10 EMDarkBrown (#4c000aff)    
+  0   0   0 black (#000000)    
+105 105 105 dimgray (#696969)    
+128 128 128 gray (#808080)    
+169 169 169 darkgray (#A9A9A9)    
+192 192 192 silver (#C0C0C0)    
+211 211 211 lightgray (#D3D3D3)    
+220 220 220 gainsboro (#DCDCDC)    
+245 245 245 whitesmoke (#F5F5F5)    
+255 255 255 white (#FFFFFF)    
+188 143 143 rosybrown (#BC8F8F)    
+205  92  92 indianred (#CD5C5C)    
+165  42  42 brown (#A52A2A)    
+178  34  34 firebrick (#B22222)    
+240 128 128 lightcoral (#F08080)    
+128   0   0 maroon (#800000)    
+139   0   0 darkred (#8B0000)    
+255   0   0 red (#FF0000)    
+255 250 250 snow (#FFFAFA)    
+255 228 225 mistyrose (#FFE4E1)    
+250 128 114 salmon (#FA8072)    
+255  99  71 tomato (#FF6347)    
+233 150 122 darksalmon (#E9967A)    
+255 127  80 coral (#FF7F50)    
+255  69   0 orangered (#FF4500)    
+255 160 122 lightsalmon (#FFA07A)    
+160  82  45 sienna (#A0522D)    
+255 245 238 seashell (#FFF5EE)    
+210 105  30 chocolate (#D2691E)    
+139  69  19 saddlebrown (#8B4513)    
+244 164  96 sandybrown (#F4A460)    
+255 218 185 peachpuff (#FFDAB9)    
+205 133  63 peru (#CD853F)    
+250 240 230 linen (#FAF0E6)    
+255 228 196 bisque (#FFE4C4)    
+255 140   0 darkorange (#FF8C00)    
+222 184 135 burlywood (#DEB887)    
+210 180 140 tan (#D2B48C)    
+250 235 215 antiquewhite (#FAEBD7)    
+255 222 173 navajowhite (#FFDEAD)    
+255 235 205 blanchedalmond (#FFEBCD)    
+255 239 213 papayawhip (#FFEFD5)    
+255 228 181 moccasin (#FFE4B5)    
+255 165   0 orange (#FFA500)    
+245 222 179 wheat (#F5DEB3)    
+253 245 230 oldlace (#FDF5E6)    
+255 250 240 floralwhite (#FFFAF0)    
+184 134  11 darkgoldenrod (#B8860B)    
+218 165  32 goldenrod (#DAA520)    
+255 248 220 cornsilk (#FFF8DC)    
+255 215   0 gold (#FFD700)    
+240 230 140 khaki (#F0E68C)    
+255 250 205 lemonchiffon (#FFFACD)    
+238 232 170 palegoldenrod (#EEE8AA)    
+189 183 107 darkkhaki (#BDB76B)    
+245 245 220 beige (#F5F5DC)    
+250 250 210 lightgoldenrodyellow (#FAFAD2)    
+128 128   0 olive (#808000)    
+255 255   0 yellow (#FFFF00)    
+255 255 224 lightyellow (#FFFFE0)    
+255 255 240 ivory (#FFFFF0)    
+107 142  35 olivedrab (#6B8E23)    
+154 205  50 yellowgreen (#9ACD32)    
+ 85 107  47 darkolivegreen (#556B2F)    
+173 255  47 greenyellow (#ADFF2F)    
+127 255   0 chartreuse (#7FFF00)    
+124 252   0 lawngreen (#7CFC00)    
+143 188 143 darkseagreen (#8FBC8F)    
+ 34 139  34 forestgreen (#228B22)    
+ 50 205  50 limegreen (#32CD32)    
+144 238 144 lightgreen (#90EE90)    
+152 251 152 palegreen (#98FB98)    
+  0 100   0 darkgreen (#006400)    
+  0 128   0 green (#008000)    
+  0 255   0 lime (#00FF00)    
+240 255 240 honeydew (#F0FFF0)    
+ 46 139  87 seagreen (#2E8B57)    
+ 60 179 113 mediumseagreen (#3CB371)    
+  0 255 127 springgreen (#00FF7F)    
+245 255 250 mintcream (#F5FFFA)    
+  0 250 154 mediumspringgreen (#00FA9A)    
+102 205 170 mediumaquamarine (#66CDAA)    
+127 255 212 aquamarine (#7FFFD4)    
+ 64 224 208 turquoise (#40E0D0)    
+ 32 178 170 lightseagreen (#20B2AA)    
+ 72 209 204 mediumturquoise (#48D1CC)    
+ 47  79  79 darkslategray (#2F4F4F)    
+175 238 238 paleturquoise (#AFEEEE)    
+  0 128 128 teal (#008080)    
+  0 139 139 darkcyan (#008B8B)    
+  0 255 255 cyan (#00FFFF)    
+224 255 255 lightcyan (#E0FFFF)    
+240 255 255 azure (#F0FFFF)    
+  0 206 209 darkturquoise (#00CED1)    
+ 95 158 160 cadetblue (#5F9EA0)    
+176 224 230 powderblue (#B0E0E6)    
+173 216 230 lightblue (#ADD8E6)    
+  0 191 255 deepskyblue (#00BFFF)    
+135 206 235 skyblue (#87CEEB)    
+135 206 250 lightskyblue (#87CEFA)    
+ 70 130 180 steelblue (#4682B4)    
+240 248 255 aliceblue (#F0F8FF)    
+ 30 144 255 dodgerblue (#1E90FF)    
+112 128 144 slategray (#708090)    
+119 136 153 lightslategray (#778899)    
+176 196 222 lightsteelblue (#B0C4DE)    
+100 149 237 cornflowerblue (#6495ED)    
+ 65 105 225 royalblue (#4169E1)    
+ 25  25 112 midnightblue (#191970)    
+230 230 250 lavender (#E6E6FA)    
+  0   0 128 navy (#000080)    
+  0   0 139 darkblue (#00008B)    
+  0   0 205 mediumblue (#0000CD)    
+  0   0 255 blue (#0000FF)    
+248 248 255 ghostwhite (#F8F8FF)    
+106  90 205 slateblue (#6A5ACD)    
+ 72  61 139 darkslateblue (#483D8B)    
+123 104 238 mediumslateblue (#7B68EE)    
+147 112 219 mediumpurple (#9370DB)    
+138  43 226 blueviolet (#8A2BE2)    
+ 75   0 130 indigo (#4B0082)    
+153  50 204 darkorchid (#9932CC)    
+148   0 211 darkviolet (#9400D3)    
+186  85 211 mediumorchid (#BA55D3)    
+216 191 216 thistle (#D8BFD8)    
+221 160 221 plum (#DDA0DD)    
+238 130 238 violet (#EE82EE)    
+128   0 128 purple (#800080)    
+139   0 139 darkmagenta (#8B008B)    
+255   0 255 magenta (#FF00FF)    
+218 112 214 orchid (#DA70D6)    
+199  21 133 mediumvioletred (#C71585)    
+255  20 147 deeppink (#FF1493)    
+255 105 180 hotpink (#FF69B4)    
+255 240 245 lavenderblush (#FFF0F5)    
+219 112 147 palevioletred (#DB7093)    
+220  20  60 crimson (#DC143C)    
+255 192 203 pink (#FFC0CB)    
+255 182 193 lightpink (#FFB6C1)                 
+#+END_SRC
+
+** Python dictionary
+
+#+BEGIN_SRC python :results output silent :tangle ./color_palettes/edgemind_color_palette.py :session
+EM_CPAL = dict(
+EMOrange = "#ef7b26",   
+EMBlue = "#1f416d", 
+EMGray = "#c9d4e6",    
+EMBrown = "#bf8740",    
+EMRed = "#a10010",    
+EMDarkBrown = "#4c000a",    
+black = "#000000",    
+dimgray = "#696969",    
+gray = "#808080",    
+darkgray = "#A9A9A9",    
+silver = "#C0C0C0",    
+lightgray = "#D3D3D3",    
+gainsboro = "#DCDCDC",    
+whitesmoke = "#F5F5F5",    
+white = "#FFFF",    
+rosybrown = "#BC8F8F",    
+indianred = "#CD5C5C",    
+brown = "#A52A2A",    
+firebrick = "#B22222",    
+lightcoral = "#F08080",    
+maroon = "#800000",    
+darkred = "#8B0000",    
+red = "#FF0000",    
+snow = "#FFFAFA",    
+mistyrose = "#FFE4E1",    
+salmon = "#FA8072",    
+tomato = "#FF6347",    
+darksalmon = "#E9967A",    
+coral = "#FF7F50",    
+orangered = "#FF4500",    
+lightsalmon = "#FFA07A",    
+sienna = "#A0522D",    
+seashell = "#FFF5EE",    
+chocolate = "#D2691E",    
+saddlebrown = "#8B4513",    
+sandybrown = "#F4A460",    
+peachpuff = "#FFDAB9",    
+peru = "#CD853F",    
+linen = "#FAF0E6",    
+bisque = "#FFE4C4",    
+darkorange = "#FF8C00",    
+burlywood = "#DEB887",    
+tan = "#D2B48C",    
+antiquewhite = "#FAEBD7",    
+navajowhite = "#FFDEAD",    
+blanchedalmond = "#FFEBCD",    
+papayawhip = "#FFEFD5",    
+moccasin = "#FFE4B5",    
+orange = "#FFA500",    
+wheat = "#F5DEB3",    
+oldlace = "#FDF5E6",    
+floralwhite = "#FFFAF0",    
+darkgoldenrod = "#B8860B",    
+goldenrod = "#DAA520",    
+cornsilk = "#FFF8DC",    
+gold = "#FFD700",    
+khaki = "#F0E68C",    
+lemonchiffon = "#FFFACD",    
+palegoldenrod = "#EEE8AA",    
+darkkhaki = "#BDB76B",    
+beige = "#F5F5DC",    
+lightgoldenrodyellow = "#FAFAD2",    
+olive = "#808000",    
+yellow = "#FFFF00",    
+lightyellow = "#FFFFE0",    
+ivory = "#FFFFF0",    
+olivedrab = "#6B8E23",    
+yellowgreen = "#9ACD32",    
+darkolivegreen = "#556B2F",    
+greenyellow = "#ADFF2F",    
+chartreuse = "#7FFF00",    
+lawngreen = "#7CFC00",    
+darkseagreen = "#8FBC8F",    
+forestgreen = "#228B22",    
+limegreen = "#32CD32",    
+lightgreen = "#90EE90",    
+palegreen = "#98FB98",    
+darkgreen = "#006400",    
+green = "#008000",    
+lime = "#00FF00",    
+honeydew = "#F0FFF0",    
+seagreen = "#2E8B57",    
+mediumseagreen = "#3CB371",    
+springgreen = "#00FF7F",    
+mintcream = "#F5FFFA",    
+mediumspringgreen = "#00FA9A",    
+mediumaquamarine = "#66CDAA",    
+aquamarine = "#7FFFD4",    
+turquoise = "#40E0D0",    
+lightseagreen = "#20B2AA",    
+mediumturquoise = "#48D1CC",    
+darkslategray = "#2F4F4F",    
+paleturquoise = "#AFEEEE",    
+teal = "#008080",    
+darkcyan = "#008B8B",    
+cyan = "#00FF",    
+lightcyan = "#E0FF",    
+azure = "#F0FF",    
+darkturquoise = "#00CED1",    
+cadetblue = "#5F9EA0",    
+powderblue = "#B0E0E6",    
+lightblue = "#ADD8E6",    
+deepskyblue = "#00BF",    
+skyblue = "#87CEEB",    
+lightskyblue = "#87CEFA",    
+steelblue = "#4682B4",    
+aliceblue = "#F0F8",    
+dodgerblue = "#1E90",    
+slategray = "#708090",    
+lightslategray = "#778899",    
+lightsteelblue = "#B0C4DE",    
+cornflowerblue = "#6495ED",    
+royalblue = "#4169E1",    
+midnightblue = "#191970",    
+lavender = "#E6E6FA",    
+navy = "#000080",    
+darkblue = "#00008B",    
+mediumblue = "#0000CD",    
+blue = "#0000",    
+ghostwhite = "#F8F8",    
+slateblue = "#6A5ACD",    
+darkslateblue = "#483D8B",    
+mediumslateblue = "#7B68EE",    
+mediumpurple = "#9370DB",    
+blueviolet = "#8A2BE2",    
+indigo = "#4B0082",    
+darkorchid = "#9932CC",    
+darkviolet = "#9400D3",    
+mediumorchid = "#BA55D3",    
+thistle = "#D8BFD8",    
+plum = "#DDA0DD",    
+violet = "#EE82EE",    
+purple = "#800080",    
+darkmagenta = "#8B008B",    
+magenta = "#FF00",    
+orchid = "#DA70D6",    
+mediumvioletred = "#C71585",    
+deeppink = "#FF1493",    
+hotpink = "#FF69B4",    
+lavenderblush = "#FFF0F5",    
+palevioletred = "#DB7093",    
+crimson = "#DC143C",    
+pink = "#FFC0CB",    
+lightpink = "#FFB6C1",
+)                 
+#+END_SRC
+
+
+
+* Plaquette
+
+- Inclinaison p1 pareil que reste de la plaquette?
+
+p2 : 
+- Enlever les mots clés dans l'image + lien + remise en forme de la page (e.g. agrandir le
+  graphique)
+- Pour info, on a enlevé les logos EdgeMind. L'idée était sympa mais finalement on pense que ça fait
+  un peu trop prétentieux.
+
+
+p3 :
+
+- Ajouter une compétence
+  - Réfléchir à l'ordre des compétences
+
+
+- Inverser les symboles entre domaines activité et technique
+
+
+- Ajuster les îcones p3 afin qu'on comprenne bien que l'association entre l'icône et les listes en
+  dessous.
+
+- Exemples de réalisations
+  - Aligner "moyens d'installation" avec la liste dans "Coût d'installation [...]
+  - Mettre une puce pour "Apport client" 
+  - Affiner les contours dans le graphe en filigrane de "Radiopro"
+
+- page 4 :
+  - Peut-être équilibrer la taille des rectangles orange, blanc et orange? Si tu as un argument pour le
+    contraire n'hésite pas
+
+
+
+- Thomas -> bdmp ibee
+- Roland -> graphe/réseaux bayésiens + formule
+- 
+
+
+* Pygment (for Minted)
+
+This file =edgemind.py= has to be copied in the pygments/styles directory. 
+
+Just do =dpkg -L python-pygments= to find out where is this directory.
+
+On linux mint 17, the following command works :
+#+BEGIN_SRC sh
+sudo cp ~/Work/EdgeMind/Visual_identity/official_docs/pygments/edgemind.py /usr/lib/python2.7/dist-packages/pygments/styles/
+#+END_SRC
+
+#+HEADER: :tangle ./official_docs/pygments/edgemind.py
+#+HEADER: :exports code
+#+HEADER: :padline no 
+#+HEADER: :comments org
+#+BEGIN_SRC python 
+# -*- coding: utf-8 -*-
+"""
+    pygments.styles.edgemind
+    ~~~~~~~~~~~~~~~~~~~~~~~~
+    Inspired by Friendly style
+
+    :copyright: Copyright 2016 by EdgeMind (Roland Donat).
+"""
+
+from pygments.style import Style
+from pygments.token import Keyword, Name, Comment, String, Error, \
+     Number, Operator, Generic, Whitespace
+
+
+class EdgemindStyle(Style):
+    """
+    A modern style based on the VIM pyte theme.
+    """
+
+    background_color = "#c9d4e6"
+    default_style = ""
+
+    styles = {
+        Whitespace:                "#bbbbbb",
+        Comment:                   "#4c000a",
+#        Comment.Preproc:           "noitalic #007020",
+#        Comment.Special:           "noitalic bg:#fff0f0",
+
+        Keyword:                   "bold #1f416d",
+#        Keyword.Pseudo:            "nobold",
+#        Keyword.Type:              "nobold #1f416d",
+
+        Operator:                  "#1f416d",
+        Operator.Word:             "bold #1f416d",
+
+        Name.Builtin:              "#bf8740",
+        Name.Function:             "#06287e",
+        Name.Class:                "bold #ef7b26",
+        Name.Namespace:            "bold #ef7b26",
+        Name.Exception:            "#007020",
+        Name.Variable:             "#bb60d5",
+        Name.Constant:             "#60add5",
+        Name.Label:                "bold #002070",
+        Name.Entity:               "bold #d55537",
+        Name.Attribute:            "#ef7b26",
+        Name.Tag:                  "bold #1f416d",
+        Name.Decorator:            "bold #555555",
+
+        String:                    "#4070a0",
+        # String.Doc:                "italic",
+        # String.Interpol:           "italic #70a0d0",
+        # String.Escape:             "bold #4070a0",
+        # String.Regex:              "#235388",
+        # String.Symbol:             "#517918",
+        # String.Other:              "#c65d09",
+        Number:                    "#4070a0",
+
+        Generic.Heading:           "bold #000080",
+        Generic.Subheading:        "bold #800080",
+        Generic.Deleted:           "#A00000",
+        Generic.Inserted:          "#00A000",
+        Generic.Error:             "#FF0000",
+        Generic.Emph:              "italic",
+        Generic.Strong:            "bold",
+        Generic.Prompt:            "bold #c65d09",
+        Generic.Output:            "#888",
+        Generic.Traceback:         "#04D",
+
+        Error:                     "border:#FF0000"
+    }
+#+END_SRC

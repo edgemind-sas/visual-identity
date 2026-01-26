@@ -1,0 +1,250 @@
+# -*- coding: utf-8 -*-
+
+#+TITLE: Documentation développeur de la base de connaissances =Figaro= =AiDR-SF=
+#+AUTHOR: Roland DONAT
+
+:OPTIONS: 
+#+DRAWERS: OPTIONS CACHE MACROS
+#+STARTUP: content
+#+STARTUP: hidestars
+
+#+TODO: TODO(t) TOIMPLEMENT(i) TOVERIFY(v) TOCOMMENT(c) TOREMOVE(r) | DONE(d)
+
+#+LANGUAGE: fr
+#+OPTIONS: H:4 num:t toc:3 \n:nil @:t ::t |:t ^:{} f:t TeX:t author:t d:nil
+#+BIND: org-latex-table-scientific-notation "{%s}E{%s}"o
+#+BIND: org-export-babel-evaluate t
+# #+BIND: org-latex-title-command ""
+
+#+LaTeX_CLASS: edgemind-minutes
+#+LaTeX_CLASS_OPTIONS: [a4paper,twoside,10pt]
+
+#+LATEX_HEADER: \usepackage[utf8]{inputenc}
+#+LATEX_HEADER: \usepackage[french]{babel}
+#+LATEX_HEADER: \usepackage{array}
+#+LATEX_HEADER: \usepackage{tabularx}
+#+LATEX_HEADER: \usepackage{longtable}
+#+LATEX_HEADER: \usepackage{graphicx}
+#+LATEX_HEADER: \usepackage{amssymb}
+#+LATEX_HEADER: \usepackage{amsmath}
+#+LATEX_HEADER: \usepackage{amsfonts}
+#+LATEX_HEADER: \usepackage{macros_math_rd}
+
+
+#+LATEX_HEADER: \usepackage{color}
+#+LATEX_HEADER: \definecolor{DarkGreen}	        {RGB}{118, 105,   7}
+#+LATEX_HEADER: \definecolor{DarkBlue}          {RGB}{ 47,  78, 150}
+
+#+LATEX_HEADER: \usepackage[pdftex,pdfborder={0 0 0},bookmarks=true,bookmarksnumbered=true,pdfpagemode=None,pdfstartview=FitH,pdfpagelayout=SinglePage,colorlinks=true,linkcolor=DarkBlue,urlcolor=DarkGreen,citecolor=DarkBlue]{hyperref}
+#+LATEX_HEADER: \usepackage[isbn=false,doi=false,url=false]{biblatex}
+#+LATEX_HEADER: \bibliography{biblio_edf,biblio_libre}
+#+LATEX_HEADER: \usepackage{subfig}
+#+LATEX_HEADER: \captionsetup[table]{position=bottom,margin=90pt,font=small,labelfont=bf,labelsep=endash,format=plain}
+#+LATEX_HEADER: \captionsetup[figure]{position=bottom,margin=90pt,font=small,labelfont=bf,labelsep=endash,format=plain}
+#+LATEX_HEADER: \captionsetup[subfloat]{margin=0pt,font=footnotesize}
+#+LATEX_HEADER: \usepackage{booktabs}
+
+
+#+LATEX_HEADER: % Graphics path
+#+LATEX_HEADER: % -------------
+#+LATEX_HEADER: \graphicspath{ 
+#+LATEX_HEADER:   {fig/}
+#+LATEX_HEADER: }
+
+#+LATEX_HEADER: % Theorem specifications 
+#+LATEX_HEADER: % ======================
+#+LATEX_HEADER: \usepackage{theorem}
+#+LATEX_HEADER: \theoremstyle{break}
+
+#+LATEX_HEADER: \newtheorem{definition_fr}{Définition}[section]
+#+LATEX_HEADER: \newtheorem{propriete}{Propriété}[section]
+#+LATEX_HEADER: \newtheorem{theoreme}{Théorème}[section]
+#+LATEX_HEADER: \newtheorem{proposition}{Proposition}[section]
+#+LATEX_HEADER: \newtheorem{exemple}{Exemple}[section]
+#+LATEX_HEADER: \newtheorem{exercice}{Exercice}[section]
+#+LATEX_HEADER: \newtheorem{methode}{Méthode}[section]
+#+LATEX_HEADER: \newtheorem{remarque}{Remarque}[section]
+#+LATEX_HEADER: \newtheorem{remarques}{Remarques}[section]
+#+LATEX_HEADER: \newtheorem{notation}{Notation}[section]
+#+LATEX_HEADER: \newtheorem{notations}{Notations}[section]
+#+LATEX_HEADER: % Definition d'une structure de theoreme intitule "demonstration"
+#+LATEX_HEADER: \newtheorem{demonstration}{Démonstration}
+#+LATEX_HEADER: % Suppression de la numerotation de la structure "demonstration"
+#+LATEX_HEADER: \renewcommand{\thedemonstration}{}
+#+LATEX_HEADER: \newenvironment{demo}{\begin{demonstration}}%
+#+LATEX_HEADER:  {$\square$\end{demonstration}}
+
+:END:
+
+#+LATEX: \renewcommand*{\refname}{}
+
+
+* Introduction
+
+** Généralités
+ 
+Ce document constitue le manuel de développement de la base de connaissances (BdC) =AiDR-SF= écrite
+avec le langage de modélisation =Figaro=. Cette BdC a pour objectif de fournir des outils de
+modélisation adaptés à la réalisation d'études de risques dynamiques [fn:dyn:Le terme "dynamique"
+fait ici référence à la prise en compte des dépendances temporelles entre les différents éléments
+des systèmes étudiés (e.g. redondances passives, lois de défaillances dépendant de variables
+contextuelles évolutant au cours du temps, réparations, etc).] reposant sur la démarche d'Analyse
+intégrée Des Risques (AiDR). Rappelons que cette démarche vise à considérer l'ensemble des risques de
+nature technique, environnementale mais aussi humaine et organisationnelle, vis-à-vis de
+plusieurs enjeux tels que la disponibilité, la sûreté, l’environnement et le maintien du patrimoine
+dans la durée. Notons toutefois que les aspects humains et organisationnels n'ont pas été modélisés
+dans la version de la BdC décrite dans ce document. Leur intégration pourra faire l'objet de travaux
+ultérieurs. 
+
+Notons enfin que ce manuel fournit toutes les explications nécessaires pour
+comprendre les choix de développement et les hypothèses faites pour construire cette BdC. Toutefois,
+les notions et concepts relatifs aux principes du langage =Figaro= lui-même sont supposés acquis. 
+
+** Contexte et motivations des développements
+
+Depuis 2006, plusieurs sources froides ont fait l'objet d'analyses de risques qui couvraient a
+minima les risques techniques et environnementaux et pouvaient inclure les aspects humains et
+organisationnels comme les actions de maintenance ou la mise en place de barrières contre des
+agresseurs. 
+
+Ces systèmes étaient constitués des éléments suivants :
+- matériels techniques caractérisés par des paramètres de fiabilité (taux de défaillance en fonctionnement, probabilité de défaillance à la sollicitation, etc);
+- aléas environnementaux pouvant influencer les paramètres de fiabilité /via/ la survenue de
+  phénomènes physiques (ensablement, arrivées de colmatants, etc). \\
+# - enjeux comme la sûreté, la disponibilité, le maintien du patrimoine dans la durée, l'environnement.
+
+Ces modèles ont été représentés à l'aide du formalisme des réseaux Bayésiens choisis pour leur capacité à :
+- traiter des grandeurs multi-attributs (efficace, dégradée…) corrélées entre elles;
+- intégrer des connaissances issues du REX et des avis d'experts;
+- être utilisés en simulation de scénarios et en diagnostic;
+- fournir une représentation du fonctionnement et de dysfonctionnement partageable avec les métiers
+  impliqués dans ces analyses (conduite, maintenance, ingénierie, facteur humain, environnement,
+  etc). \\
+
+Suite à ces travaux, deux limites principales ont été identifiées sur la modélisation par les réseaux
+bayésiens :
+- le formalisme des réseaux bayésiens est un formalisme de modélisation probabiliste de bas niveau
+  qui tend à rapidement perdre en lisibilité et maintenabilité à mesure que le
+  système à représenter devient complexe;
+- les réseaux bayésiens ne sont pas adaptés à la modélisation des systèmes dynamiques alors que la
+  plupart des systèmes industriels complexes sont intrinsèquement dynamiques (systèmes
+  normal/secours, récupération de matériel, reconfiguration d'automate).
+
+En vue de dépasser ces deux limitations, EDF a initié le développement de la présente BdC en
+utilisant le langage de modélisation =Figaro=. Le choix
+du langage =Figaro= se justifie d'un point de vue technique car c'est un des seuls
+langages de modélisation haut niveau capables de représenter des systèmes dynamiques complexes. Par
+ailleurs, =Figaro= est développé par EDF qui dispose ainsi de la complète maîtrise de ce langage
+ainsi que de la plate-forme outils de modélisation et d'analyses associée.
+
+
+** Démarche suivie
+
+Cette BdC est développée en suivant l'approche "composants intelligents" visant /in fine/ à décrire
+comportement dynamique des éléments techniques et environnementaux nécessaires à la mise en 
+pratique de la démarche AiDR. Contrairement à l'utilisation d'un formalisme de modélisation
+dynamique abstrait (e.g. chaînes de Markov, réseaux de Pétri, BDMP, etc), l'approche "composants
+intelligents" permet de construire des modèles proches de l'architecture des systèmes techniques
+étudiés favorisant ainsi leur lisibilité et leur maintenabilité.
+
+Le développement de la BdC =AiDR-DF= est divisé en deux modules distincts. Le premier module,
+référencé dans la suite par =AiDR-SF-Noyau=, correspond à une description des règles déterministes et aléatoires
+associées à un ensemble de comportements génériques caractéristiques des objets manipulés dans la
+démarche AiDR. Par exemple, pour étudier une source froide, il est nécessaire de modéliser
+différents types de capteur (capteur bulle à bulle, capteur à flotteur, etc). Pour satisfaire cette
+exigence, des classes sont développées dans le module =AiDR-SF-Noyau= permettant de décrire le comportement d'un objet capteur générique ainsi que
+ses possibles interactions avec le reste du système. Le second module, appelé =AiDR-SF-SYS=, a pour
+objectif de mettre à disposition des analystes systèmes tous les objets et concepts directement
+nécessaires à la réalisation d'une AiDR. C'est dans ce module que sont décrites les spécificités des
+capteurs bulle à bulle et des capteurs à flotteur. C'est également dans le module =AiDR-SF-SYS= que
+sont modélisés les processus d'évolution des différentes variables environnementales,
+les lois d'occurrence des agresseurs pris en compte ou encore les modes de défaillance particuliers
+des systèmes techniques impliqués dans le système. 
+
+Ce travail de développement s'est appuyé sur l'AiDR réalisée sur le site de Cruas utilisant le
+formalisme des réseaux bayésiens
+\cite{Alcadia2012AiDR_Cruas_SF_AMDE,Alcadia2013AiDR_Cruas_SFSE_RB,Alcadia2013AiDR_Cruas_SFSE_RB_quantif}
+en ne considérant que la partie hydraulique. 
+
+** Organisation du document
+
+
+* Plate-forme outils =Figaro=
+
+Le langage =Figaro= \cite{Bouissou_al1991FIGARO} est un langage de modélisation haut niveau créé par EDF entre 1989 et 1991 dont
+le développement est toujours actif aujourd'hui. Ce langage, reposant à la fois sur les techniques
+d'intelligence artificielle et sur la théorie des probabilités, permet d'écrire des bases de connaissances
+(BdC) à partir de règles de production déterministes (règles d'interaction) ou aléatoire (règles
+d'occurrence). Une BdC correspond à la description d'un formalisme de modélisation qui peut être
+générique (e.g. réseaux de Pétri, BDMP, etc) ou bien dédié à la représentation de systèmes particuliers
+(approche "composants intelligents"). Plus concrètement, une BdC constitue une boite à outils de
+modélisation directement utilisable par un analyste système pour représenter et étudier une classe
+de systèmes donnée.
+
+Par ailleurs, il est possible de développer pour chaque BdC une interface homme-machine
+(IHM) utilisable dans l'outil =KB3= afin de disposer d'un environnement de modélisation
+graphique. Les analystes utilisent donc =KB3= avec une BdC adaptée à leur
+application pour décrire graphiquement le système étudié et les objectifs de l'étude. 
+
+Enfin, il existe plusieurs outils d'analyses permettant d'exploiter numériquement les modèles
+systèmes ainsi développés. Les principaux outils de quantification sont :
+- le générateur d’arbres de défaillances pour les modèles statiques;
+- l'outil =Figseq= pour les markoviens;
+- l’outil =YAMS= de simulation pour tous les modèles Markoviens ou non.
+
+
+
+* Étapes et groupe de règles
+** Étapes
+
+- =init_step= :: Cette étape sert à initialiser le système. Les règles associées à cette étape ne
+                 doivent être appliquées que lors du premier passage dans les règles d'interactions.
+- =update_aidr= :: Cette étape est utilisée pour mettre à jour les attributs des objets qui
+                   dépendent de l'état des variables environnementales considérées dans la démarche AiDR.
+- =check_failure_occ= :: Cette étape est utilisée pour appliquer des règles de mise à jour de
+     certains attributs dépendants de la présence d'une défaillance sur les objets associés
+     (typiquement la faculté de propager un flux). 
+- =init_obj_properties= :: Cette étape sert à initialiser les propriétés intrinsèques des
+     objets manipulés à chaque passage dans les règles d'interactions. Exemple : par hypothèse une
+     source fournir toujours du fluide à cette étape. Ce fait sera ou non invalidé dans une étape
+     ultérieure en cas par exemple de défaillance de cette source.
+- =flow_propagation= :: Cette étape est utilisé pour propager le flux dans le système. À la fin
+     de cette étape, les informations sur l'alimentation et la circulation du flux sont figées
+     jusqu'au prochain passage dans les règles d'interactions. 
+- =propagation_aidr= :: Cette étape est utilisé pour propager à tous le système les informations prises en compte
+     spécifiquement dans la démarche AiDR (ex : agresseurs, informations climatiques, etc). 
+- =system_monitoring= :: Cette étape est utilisée pour l'inspection du système par les objets
+     "moniteur" qui peuvent être concrtèment des capteurs et des opérateurs. Cette étape arrive donc
+     logiquement après la phase de propagation des flux.
+- =order_propagation= :: Cette étape sert à propager les requêtes émanant des objets contrôleur vers
+     les objets contrôlés du système. 
+- =enabling_failure_occurrence= ::  Cette étape sert à vérifier toutes les défaillances pouvant se
+     produire sur le système. 
+- =test_failure_condition= :: TOCOMMENT
+- =saving_step= :: Cette étape est utilisée pour mémoriser la valeur de certains attributs à
+                   l'instant $t$ dans le but de pouvoir faire des comparaisons de valeurs à $t +
+                   \delta t$. 
+
+#+HEADER: :tangle ./Dev/bdc/aidr_sf_base.fi
+#+HEADER: :padline yes
+#+HEADER: :eval no
+#+HEADER: :comments org
+#+HEADER: :exports code
+#+BEGIN_SRC figaro 
+ORDRE_DES_ETAPES
+	init_step;
+    update_aidr;
+    check_failure_occ;
+    init_obj_properties; 
+	flow_propagation;
+	propagation_aidr;
+    system_monitoring;
+    order_propagation;
+    enabling_failure_occurrence;
+    test_failure_condition; 
+	saving_step;
+#+END_SRC
+
+** Groupes de règles
+
+Cette base de connaissance ne contient qu'un seul groupe de règles nommé =simu_group=. 

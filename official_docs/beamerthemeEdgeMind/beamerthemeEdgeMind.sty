@@ -1,0 +1,78 @@
+% -*- coding: utf-8 -*-
+
+\ProvidesPackage{beamerthemeEdgeMind}[2014/05/29 First Beamer EdgeMind Style Roland DONAT and Thomas FRIEDLHUBER]
+
+
+% New commands
+% ============
+\newcommand{\ThenC}{$\Rightarrow$}
+\newcommand{\itemThenC}{\item[\ThenC]}
+\newcommand{\IffC}{$\iff$}
+\newcommand{\itemIffC}{\item[\IffC]}
+\newcommand{\iffC}{$\Leftrightarrow$}
+\newcommand{\itemiffC}{\item[\iffC]}
+
+
+\newcommand{\EventName}{}
+
+\newcommand{\event}[1]{\renewcommand{\EventName}[0]{#1}}
+
+\def\hilite<#1>{
+  \temporal<#1>{\color{EMGrey!20}}{\color{Black}}{\color{Black}}
+}
+
+\pgfdeclareimage[height=0.4cm]{logo_edgemind_hz}{logo_edgemind_hz}
+
+
+% Theme
+% =====
+\useinnertheme[shadow]{rounded}
+\useoutertheme[subsection=false]{miniframes}
+
+% To display horizontal frame bullets in headline
+\makeatletter
+\beamer@compresstrue
+\makeatother
+
+\usecolortheme{EdgeMind}
+
+% Add frame number
+\setbeamertemplate{footline}{
+    \usebeamerfont{footline}
+    \usebeamercolor{footline}
+
+\hspace{0.2cm}\pgfuseimage{logo_edgemind_hz}
+\hfill
+%\hspace{-2cm}\EventName\
+\insertshortdate[center]
+\hfill
+    {\color{EMLogoOrange}\insertframenumber/\inserttotalframenumber}
+    \hspace{0.1cm}
+    \vspace{0.1cm}
+}
+
+
+\setbeamertemplate{logo}{}
+
+% Headline color configuration, does not work if put in the beamercolor file...
+\setbeamercolor{section in head/foot}{bg=EMLogoBlue,fg=EMGrey}
+
+%\setbeamerfont{section in head/foot}{size=\bfseries}
+%\setbeamerfont{footline}{size=\bfseries}
+
+% Fonts
+% -----
+%%\setbeamerfont{block body}{size=\small}
+%%\setbeamerfont{title}{size=\Large,series=\bfseries}
+\setbeamerfont{frametitle}{size=\large,series=\bfseries}
+\setbeamerfont{framesubtitle}{size=\small,series=\mdseries}
+
+%\setbeamerfont{block title}{size=\footnotesize, series=\bfseries}
+
+% Block title with text size (I guess...)
+\setbeamerfont{block title}{size=\normalsize}
+
+
+\setbeamertemplate{navigation symbols}{}
+
+

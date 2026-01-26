@@ -1,0 +1,64 @@
+# -*- coding: utf-8 -*-
+
+#+TITLE: EdgeMind's official documents
+#+AUTHOR: Roland DONAT and Thomas FRIEDLHUBER
+
+:OPTIONS: 
+#+DRAWERS: OPTIONS CACHE MACROS
+#+STARTUP: content
+#+STARTUP: hidestars
+
+#+TODO: TODO(t) TOPREPARE(a) INPROGRESS(p) POSTPONED(r) WAITING(w) | DONE(d) CANCELLED(c)
+
+#+LANGUAGE: en
+#+OPTIONS: H:4 num:t toc:3 \n:nil @:t ::t |:t ^:{} f:t TeX:t author:t d:nil
+#+BIND: org-latex-table-scientific-notation "{%s}E{%s}"
+# #+BIND: org-latex-title-command ""
+:END:
+
+
+* LaTeX configuration
+
+To use EdgeMind LateX classes, it is needed to add the EM LaTeX classes to the LaTeX path
+(i.e. =/usr/share/texmf/tex/latex/= on Ubuntu). The easiest way to do this is to create a symbolic
+link of the EM classes in the LateX path. 
+
+Finally, run the =texhash= command as root to validate the changes.
+
+* Plaquette
+
+** Retour E-Dilik
+
+*** Page 1
+
+Alléger le style général :
+- On enlève "industriels"
+- On test texte bleu léger (style homogène)
+- Réduire EdgeMind text à côté logo
+
+Option
+- Pencher un peu moins la bande du milieu?
+
+
+*** Page 2
+
+Texte :
+- Modifier titre avec un synomyne "Nos valeurs"
+- Remplace JEI par "Innovation" 
+- Réfléchir à remplacer "Qualités retionnelles"
+- Enlever le style "gras" dans les textes
+- Dans expertise :
+  - On enlève "énergie", "avionique" et "ferroviaire"
+- Dans "Innovation"
+  - services en "conseils et développements"
+  - Enlever "dans nos domaines d'intérêt".
+  - Enelever "plus vite, plus loin" en intégrant les mots-clés "perspectives" et "élaboration" 
+- Qualité relationnelles -> Résilience
+
+Dessin :
+- Enlever les logos
+
+
+
+
+
