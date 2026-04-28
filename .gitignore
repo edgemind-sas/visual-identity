@@ -17,3 +17,7 @@ official_docs/plaquette/dev
 official_docs/plaquette/doc/*
 official_docs/plaquette/fig
 .aider*
+CLAUDE.md
+official_docs/propal/reproductions
+official_docs/propal/latex/PTC_201401EDF00201.org
+docs
