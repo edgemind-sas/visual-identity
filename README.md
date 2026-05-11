@@ -58,17 +58,35 @@ Tous les assets sont disponibles en SVG (vectoriel) et PNG (raster).
 
 ### 📄 Templates de Documents
 
-Le dossier `official_docs/` contient des templates professionnels pour :
+Le dossier `official_docs/` contient des templates professionnels. Pour les documents les plus courants, **Typst** est désormais le format officiel (compilation rapide, syntaxe moderne). Les anciennes classes LaTeX correspondantes sont conservées en *Legacy*. Pour les documents non encore portés, LaTeX reste le format officiel.
 
-- **Rapports** (`report/`) : template Typst `edgemind-report.typ` (+ ancienne classe LaTeX `edgemind-report.cls`)
-- **Propositions Techniques et Commerciales** (`propal/`) : template Typst `edgemind-propal.typ` avec helpers (lotissement, tâches, livrables, ressources, offre commerciale, échéances, planning…)
-- **Présentations** : thème LaTeX Beamer (`beamerthemeEdgeMind/`) + thème Typst Touying (`slides/`)
-- **Comptes-rendus** (`minutes/`) : template de réunion
-- **Guides utilisateur** (`userguide/`) : templates de documentation
-- **Lettres** (`lettre/`) : papier à en-tête
-- **Factures** (`invoice/`) : templates ODS, XLSX, PDF
-- **Brochure** (`plaquette/`) : plaquette de présentation
-- **Cartes de visite** (`vcards/`) : designs recto/verso
+#### ✨ Templates Typst (recommandés)
+
+- **Rapports** (`report/`) — `edgemind-report.typ` : page de titre, TOC, bibliographie, figures stylées. Voir `report/example_report.typ` et `report/README.md`.
+- **Propositions Techniques et Commerciales** (`propal/`) — `edgemind-propal.typ` : template PTC avec 10 helpers (glossaire, lotissement, tâches, livrables, ressources, offre commerciale synthèse/détaillée, échéances, validité, planning mensuel/hebdomadaire). Voir `propal/README.md` et `propal/example_propal.typ`.
+- **Présentations** (`slides/`) — thème Touying `edgemind-theme.typ` : page de titre avec cartouche EdgeMind, slides de section, header/footer aux couleurs de la marque. Voir `slides/main.typ`.
+
+#### 📐 Templates LaTeX (format officiel — pas de portage Typst)
+
+- **Comptes-rendus de réunion** (`minutes/`) — `edgemind-minutes.cls`
+- **Notes internes** (`note/`) — `edgemind-note.cls`
+- **Guides utilisateur** (`userguide/`, `userguide_with_ref/`) — `edgemind-userguide.cls`, `edgemind-userguide_with_ref.cls`
+
+#### 📦 Legacy LaTeX (remplacés par Typst)
+
+Conservés à titre historique, à ne plus utiliser pour les nouveaux documents :
+
+- **Rapports** : `report/edgemind-report.cls` → préférer `edgemind-report.typ`
+- **Présentations Beamer** : `beamerthemeEdgeMind/` → préférer le thème Touying `slides/`
+- **Propal LaTeX** : `propal/latex/edgemind-tcp.cls` → préférer `edgemind-propal.typ`
+
+#### 🧾 Autres formats
+
+- **Lettres** (`lettre/`) : papier à en-tête PDF/SVG
+- **Factures** (`invoice/`) : ODS, XLSX, PDF
+- **Brochure** (`plaquette/`) : sources Illustrator + PDF
+- **Cartes de visite** (`vcards/`) : recto/verso PDF
+- **Tampons** (`stamp/`) : SVG/PNG/PDF
 
 ### 🎨 Styles et Thèmes
 
@@ -117,10 +135,30 @@ blue = edgemind_palette['EMBlue']
 
 ### Utiliser les Templates
 
-1. **Rapports (Typst)** : copier `official_docs/report/example_report.typ` puis `typst compile --root . mon-rapport.typ`
-2. **Propals / PTC (Typst)** : copier `official_docs/propal/example_propal.typ` puis `typst compile --root . ma-propal.typ` (voir `propal/README.md`)
-3. **Présentations** : thème Beamer avec `\usetheme{EdgeMind}` ou thème Typst Touying dans `official_docs/slides/`
-4. **Documents Web** : intégrer `official_docs/css/edgemind.css`
+**Typst (recommandé)** :
+
+```bash
+# Rapport
+cd official_docs/report
+typst compile --root . example_report.typ
+
+# Propal (PTC)
+cd official_docs/propal
+typst compile --root . example_propal.typ
+
+# Présentation
+cd official_docs/slides
+typst compile main.typ
+```
+
+**LaTeX (pour les documents non portés : minutes, note, userguide)** :
+
+```bash
+cd official_docs/minutes
+latexmk -pdf edgemind-minutes.tex
+```
+
+**Documents Web** : intégrer `official_docs/css/edgemind.css`.
 
 ## Documentation Complète
 
@@ -137,14 +175,19 @@ Visual_identity/
 ├── font_opensans/               # Famille de polices OpenSans
 ├── visual/                      # Illustrations et icônes
 ├── official_docs/               # Templates et styles
-│   ├── css/                    # Styles web
-│   ├── beamerthemeEdgeMind/    # Thème Beamer
-│   ├── pygments/               # Coloration code
-│   ├── report/                 # Template rapport (Typst + LaTeX)
-│   ├── propal/                 # Template propal/PTC (Typst)
-│   ├── slides/                 # Template présentation (Typst Touying)
+│   ├── report/                 # ✨ Rapport (Typst + LaTeX legacy)
+│   ├── propal/                 # ✨ Propal/PTC (Typst, LaTeX legacy)
+│   ├── slides/                 # ✨ Présentation (Typst Touying)
+│   ├── minutes/                # 📐 Compte-rendu (LaTeX)
+│   ├── note/                   # 📐 Note interne (LaTeX)
+│   ├── userguide/              # 📐 Guide utilisateur (LaTeX)
+│   ├── beamerthemeEdgeMind/    # 📦 Beamer (legacy → slides/)
+│   ├── lettre/                 # Papier à en-tête
+│   ├── invoice/                # Factures
 │   ├── plaquette/              # Brochure entreprise
-│   └── ...                     # Autres templates
+│   ├── vcards/                 # Cartes de visite
+│   ├── css/                    # Styles web
+│   └── pygments/               # Coloration code
 ├── EM-visual_identity.pdf      # Charte graphique
 └── README.md                   # Ce fichier
 ```
