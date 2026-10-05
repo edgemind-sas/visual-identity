@@ -200,6 +200,11 @@
   // List settings (use dashes like in LaTeX class)
   set list(marker: [--])
 
+  // A list stays close to the sentence that introduces it (usually ending
+  // with a colon): small gap above, regular paragraph gap below.
+  show list: set block(above: 0.7em)
+  show enum: set block(above: 0.7em)
+
   // Figures: force full "Figure" word for both captions and references
   // (Typst's French locale would otherwise abbreviate references to "Fig.").
   set figure(supplement: [Figure])
@@ -250,8 +255,10 @@
 
     #v(1%)
 
-    // Title (orange, smallcaps)
+    // Title (orange, smallcaps). Not justified: a long title wrapped on
+    // several centred lines must keep regular word spacing.
     #align(center)[
+      #set par(justify: false)
       #text(size: 28pt, weight: "bold", fill: em-logo-orange)[
         #smallcaps(title)
       ]
@@ -280,7 +287,7 @@
           [
             #align(left)[
               #text(weight: "bold")[Résumé]
-              #par(leading: 0.5em, spacing: 1em)[#abstract]
+              #par(leading: 0.5em, spacing: 1em, justify: true)[#abstract]
             ]
           ]
         )
