@@ -11,6 +11,55 @@
 #let em-red = rgb(161, 0, 16)             // CMYK: 0.21, 1.00, 0.92, 0.14 → #A10010
 #let em-brown = rgb(76, 0, 10)            // CMYK: 0.34, 1.00, 0.91, 0.55 → #4C000A
 
+// Title-page block: optional image framed by partner logos.
+// n logos: ceil(n/2) in the left column and the rest in the right one, at most 4
+// per column; any remainder goes to a row below.
+#let cover-block(img, img-width, logos, logo-height, logo-width) = {
+  let logo(path) = box(width: logo-width, height: logo-height,
+    align(center + horizon, image(path, width: 100%, height: 100%, fit: "contain")))
+  let row(paths) = if paths.len() > 0 {
+    v(0.6em)
+    stack(dir: ltr, spacing: 1.5em, ..paths.map(logo))
+  }
+  if img == none {
+    return row(logos)
+  }
+  let nl = calc.min(calc.ceil(logos.len() / 2), 4)
+  let nr = calc.min(logos.len() - nl, 4)
+  let left = logos.slice(0, nl)
+  let right = logos.slice(nl, nl + nr)
+  let rest = logos.slice(nl + nr)
+  let side = nl
+  if side == 0 {
+    image(img, width: img-width)
+  } else {
+    // The side columns spread their logos over the height of the image.
+    layout(size => {
+      let w = if type(img-width) == ratio { img-width * size.width } else { img-width }
+      let h = measure(image(img, width: w)).height
+      let column(paths) = block(height: h, stack(dir: ttb, spacing: 1fr, ..paths.map(logo)))
+      grid(
+        columns: (1fr, w, 1fr),
+        column-gutter: 1em,
+        align: center + horizon,
+        column(left),
+        image(img, width: w),
+        column(right),
+      )
+    })
+  }
+  row(rest)
+}
+
+#let abstract-block(abstract) = block(
+  width: 100%,
+  inset: (x: 2em, y: 1em),
+  align(left)[
+    #text(weight: "bold")[Résumé]
+    #par(leading: 0.5em, spacing: 1em, justify: true)[#abstract]
+  ],
+)
+
 // Main template function
 #let edgemind-report(
   // Document metadata
@@ -28,8 +77,19 @@
 
   // Optional elements
   abstract: none,
+  // false moves the abstract to the top of the page after the title page,
+  // for a title page already filled by an image and partner logos.
+  abstract-on-cover: true,
   title-image: none,
   title-image-width: 60%, // percentage of text width
+
+  // Optional partner logos on the title page, e.g. the subscribers of a
+  // collaborative project. With a title image they frame it: one column on
+  // each side, the remainder in a row below. Without one they form a
+  // centred row. Paths follow the same rule as the logos below.
+  cover-logos: (),
+  cover-logo-height: 1.1cm,
+  cover-logo-width: 2.6cm, // every logo fits this box: equal visual weight
 
   // Logos (paths to image files)
   // IMPORTANT: Paths must be relative to your .typ document location, NOT this template file
@@ -271,26 +331,17 @@
         ]
       }
 
-      // Optional title image
-      #if title-image != none {
+      // Optional title image, framed by the partner logos if any
+      #if title-image != none or cover-logos.len() > 0 {
         v(1em)
-        image(title-image, width: title-image-width)
+        cover-block(title-image, title-image-width, cover-logos, cover-logo-height, cover-logo-width)
       }
 
       #v(1%)
 
       // Abstract (if provided)
-      #if abstract != none {
-        block(
-          width: 100%,
-          inset: (x: 2em, y: 1em),
-          [
-            #align(left)[
-              #text(weight: "bold")[Résumé]
-              #par(leading: 0.5em, spacing: 1em, justify: true)[#abstract]
-            ]
-          ]
-        )
+      #if abstract != none and abstract-on-cover {
+        abstract-block(abstract)
         v(1%)
       }
 
@@ -336,6 +387,11 @@
   // Reset page counter for main content
   counter(page).update(1)
 
+  // Abstract moved off the title page: first thing of the main content
+  if abstract != none and not abstract-on-cover {
+    abstract-block(abstract)
+  }
+
   // Reset heading counter (in case document starts with H2)
   counter(heading).update(0)
 
@@ -346,6 +402,14 @@
       style: bibliography-style
     )
   }
+
+  // Tables: header row on the EdgeMind grey, bold blue text, light rules.
+  // Set after the title page so that its metadata table keeps its own layout.
+  set table(
+    fill: (x, y) => if y == 0 { rgb("#c9d4e6") },
+    stroke: 0.5pt + rgb("#9aa8bf"),
+  )
+  show table.cell.where(y: 0): set text(weight: "bold", fill: rgb("#1f416d"))
 
   // Document body
   body
