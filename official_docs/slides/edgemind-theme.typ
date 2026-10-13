@@ -224,12 +224,12 @@
 
         if info-text != none {
           v(0.5em)
-          text(size: 12pt, fill: em-gray, em-smallcaps(info-text))
+          text(size: 12pt, fill: em-orange, em-smallcaps(info-text))
         }
 
         if date-text != none {
           v(0.5em)
-          text(size: 11pt, fill: em-gray, em-smallcaps(date-text))
+          text(size: 11pt, fill: em-orange, em-smallcaps(date-text))
         }
       } else {
         // Legacy layout: large centered logo + tagline.
