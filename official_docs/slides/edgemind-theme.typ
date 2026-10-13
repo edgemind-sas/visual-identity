@@ -5,7 +5,7 @@
 //   #import "@preview/touying:0.6.2": *
 //   #import "edgemind-theme.typ": *
 //   #show: edgemind-theme.with(
-//     logo: image("../logos/logo_edgemind_hz.png", height: 2.5em),
+//     logo: image("../../logos/logo_edgemind_hz.png", height: 2.5em),
 //   )
 
 #import "@preview/touying:0.6.2": *

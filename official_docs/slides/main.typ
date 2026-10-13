@@ -8,7 +8,7 @@
 
 #show: edgemind-theme.with(
   aspect-ratio: "16-9",
-  logo: image("../logos/logo_edgemind_hz.png", height: 2.5em),
+  logo: image("../../logos/logo_edgemind_hz.png", height: 2.5em),
 )
 
 // ============================================================
@@ -16,7 +16,7 @@
 // ============================================================
 
 #title-slide(
-  logo: image("../logos/logo_edgemind_original.png", height: 8em),
+  logo: image("../../logos/logo_edgemind_original.png", height: 8em),
   // Add illustration here when available, e.g.:
   // illustration: image("images/brain-gears.png", height: 5em),
 )
@@ -63,7 +63,7 @@
 
 #content-slide(
   title: "NOTRE IDENTITE",
-  side-image: image("../logos/logo_edgemind_only.svg", width: 100%),
+  side-image: image("../../logos/logo_edgemind_only.svg", width: 100%),
   side-image-width: 30%,
 )[
   #v(0.5em)

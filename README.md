@@ -148,7 +148,7 @@ typst compile --root . example_propal.typ
 
 # Présentation
 cd official_docs/slides
-typst compile main.typ
+typst compile --root ../.. main.typ
 ```
 
 **LaTeX (pour les documents non portés : minutes, note, userguide)** :
