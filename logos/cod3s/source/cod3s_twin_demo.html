@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>COD3S jumeau stochastique</title>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F4F6FA;--card:#FFFFFF;--ink:#1F416D;--muted:#4F7DB5;--line:#DCE5F2;--stage:#FFFFFF}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Open Sans',sans-serif}
+main{max-width:1100px;margin:0 auto;padding:24px 16px 48px}
+h1{font-size:24px;margin:0 0 4px}h2{font-size:17px;margin:28px 0 10px}
+p.lead{margin:0 0 18px;color:var(--muted);font-size:14px}
+.stage{border-radius:12px;border:1px solid var(--line);background:var(--stage);padding:24px;transition:background .3s}
+.stage.dark{background:#0F141A;border-color:#0F141A}
+.stage svg{width:100%;height:auto;display:block;max-height:320px}
+.bar{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0;align-items:center}
+button{font:600 14px 'Open Sans',sans-serif;border:1px solid var(--ink);background:#fff;color:var(--ink);border-radius:6px;padding:7px 14px;cursor:pointer}
+button.primary{background:#EF7B26;border-color:#EF7B26;color:#1A1208}
+.seed{font-size:13px;color:var(--muted);margin-left:auto}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.cell{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px;text-align:center;font-size:12px;color:var(--muted)}
+.cell svg{width:100%;height:auto}
+</style></head><body><main>
+<h1>COD3S : construction stochastique du jumeau</h1>
+<p class="lead">Une nuée de points part du cube réel (bleu) et construit son jumeau numérique (orange). Le logo final est toujours le même ; seule sa construction change à chaque affichage. Les impulsions bleues qui circulent ensuite sur les arêtes représentent les échanges entre le système réel et son jumeau.</p>
+<div id="stage" class="stage"><svg id="anim" viewBox="0 0 320 100" role="img" aria-label="Logo COD3S animé"></svg></div>
+<div class="bar"><button class="primary" id="replay">Rejouer</button><button id="reseed">Nouvelle construction</button><button id="theme">Fond sombre</button><span class="seed" id="seed"></span></div>
+<h2>Candidats au tirage de référence</h2>
+<div class="grid" id="grid"></div>
+<div class="bar"><button id="regrid">Six autres tirages</button></div>
+</main>
+<script>
+// COD3S logo generator: shared by the node exporter and the browser demo.
+const PAL = {
+  light: { blue: "#1F416D", mid: "#4F7DB5", orange: "#EF7B26", osoft: "#F5A76A", exch: "#4F7DB5", word: "#1F416D", sign: "#4F7DB5" },
+  dark: { blue: "#5B9BD5", mid: "#8FB3DC", orange: "#EF7B26", osoft: "#F5A76A", exch: "#8FB3DC", word: "#E6EAF0", sign: "#8FB3DC" },
+};
+const FONT = "'Open Sans', sans-serif";
+
+function rng(seed) {
+  let a = seed >>> 0;
+  return () => { a = (a + 0x6d2b79f5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+}
+function gauss(r) { let u = 0; while (!u) u = r(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * r()); }
+function geom(cx = 50, cy = 50, s = 34) {
+  const k = 0.866 * s;
+  return { top: [cx, cy - s], ul: [cx - k, cy - s / 2], ur: [cx + k, cy - s / 2], ctr: [cx, cy],
+           ll: [cx - k, cy + s / 2], lr: [cx + k, cy + s / 2], bot: [cx, cy + s] };
+}
+const G = geom();
+const poly = (pts) => pts.map(([x, y]) => `${x.toFixed(2)},${y.toFixed(2)}`).join(" ");
+const DIGITAL_EDGES = [["top", "ur"], ["ur", "lr"], ["lr", "bot"], ["ur", "ctr"]];
+const SEAM = [["top", "ctr"], ["ctr", "bot"]];
+
+function realHalf(p) {
+  return `<g id="real"><polygon points="${poly([G.ul, G.ctr, G.bot, G.ll])}" fill="${p.blue}"/>` +
+         `<polygon points="${poly([G.top, G.ctr, G.ul])}" fill="${p.mid}"/></g>`;
+}
+
+// Particles of the digital twin: dense on edges, sparse on faces, blue sprinkles = exchanges.
+function cloud(seed) {
+  const r = rng(seed), out = [];
+  const onEdge = (a, b, n, jit, pBlue, kind) => {
+    const [x0, y0] = G[a], [x1, y1] = G[b], L = Math.hypot(x1 - x0, y1 - y0), nx = -(y1 - y0) / L, ny = (x1 - x0) / L;
+    for (let i = 0; i < n; i++) {
+      const t = r(), j = gauss(r) * jit;
+      out.push({ x: x0 + (x1 - x0) * t + nx * j, y: y0 + (y1 - y0) * t + ny * j, rad: 0.3 + Math.pow(r(), 3) * 1.25,
+                 op: 0.8 + r() * 0.2, col: r() < pBlue ? "exch" : (r() < 0.75 ? "orange" : "osoft"), kind });
+    }
+  };
+  DIGITAL_EDGES.forEach(([a, b]) => onEdge(a, b, 85, 0.55, 0.12, "edge"));
+  SEAM.forEach(([a, b]) => onEdge(a, b, 40, 0.45, 0.6, "seam"));
+  const inTri = (A, B, C, n) => { for (let i = 0; i < n; i++) { let u = r(), v = r(); if (u + v > 1) { u = 1 - u; v = 1 - v; }
+      out.push({ x: A[0] + (B[0] - A[0]) * u + (C[0] - A[0]) * v, y: A[1] + (B[1] - A[1]) * u + (C[1] - A[1]) * v,
+                 rad: 0.2 + Math.pow(r(), 2) * 0.45, op: 0.35 + r() * 0.45, col: r() < 0.06 ? "exch" : "osoft", kind: "face" }); } };
+  inTri(G.top, G.ur, G.ctr, 60);
+  inTri(G.ctr, G.ur, G.lr, 60); inTri(G.ctr, G.lr, G.bot, 60);
+  ["top", "ur", "lr", "bot"].forEach((k) => out.push({ x: G[k][0], y: G[k][1], rad: 1.7, op: 1, col: "orange", kind: "node" }));
+  // Origin of each particle, inside the real half (used by the animation).
+  out.forEach((q) => { let u = r(), v = r(); if (u + v > 1) { u = 1 - u; v = 1 - v; }
+    const [A, B, C] = r() < 0.6 ? [G.ll, G.ctr, G.bot] : [G.ul, G.ctr, G.ll];
+    q.ox = A[0] + (B[0] - A[0]) * u + (C[0] - A[0]) * v; q.oy = A[1] + (B[1] - A[1]) * u + (C[1] - A[1]) * v; });
+  return out;
+}
+
+function symC1(p) { // dotted wireframe
+  const d = `stroke="${p.orange}" stroke-width="2.6" stroke-linecap="round" stroke-dasharray="0.01 4.1" fill="none"`;
+  return realHalf(p) + `<g id="twin"><polyline points="${poly([G.top, G.ur, G.lr, G.bot])}" ${d}/>` +
+    `<polyline points="${poly([G.ur, G.ctr])}" ${d}/>` +
+    ["top", "ur", "lr", "bot"].map((k) => `<circle cx="${G[k][0]}" cy="${G[k][1]}" r="2.1" fill="${p.orange}"/>`).join("") + "</g>";
+}
+function symC2(p, seed = 7) { // stochastic point cloud
+  return realHalf(p) + `<g id="twin">` + cloud(seed).map((q) =>
+    `<circle cx="${q.x.toFixed(2)}" cy="${q.y.toFixed(2)}" r="${q.rad.toFixed(2)}" fill="${p[q.col]}" opacity="${q.op.toFixed(2)}"/>`).join("") + "</g>";
+}
+function symC3(p, seed = 11) { // pixel mosaic on an isometric grid
+  const r = rng(seed), cells = [], N = 6, ins = 0.14;
+  const cell = (O, U, V, i, j) => { const P = (a, b) => [O[0] + U[0] * a + V[0] * b, O[1] + U[1] * a + V[1] * b];
+    const a0 = (i + ins) / N, a1 = (i + 1 - ins) / N, b0 = (j + ins) / N, b1 = (j + 1 - ins) / N;
+    return [P(a0, b0), P(a1, b0), P(a1, b1), P(a0, b1)]; };
+  const sub = (A, B) => [A[0] - B[0], A[1] - B[1]];
+  const pick = () => (r() < 0.08 ? p.exch : r() < 0.7 ? p.orange : p.osoft);
+  for (let i = 0; i < N; i++) for (let j = 0; j < N; j++) if (r() < 0.86)  // right face
+    cells.push(`<polygon points="${poly(cell(G.ctr, sub(G.ur, G.ctr), sub(G.bot, G.ctr), i, j))}" fill="${pick()}"/>`);
+  for (let i = 0; i < N; i++) for (let j = 0; j < N; j++) if (j < i && r() < 0.86) // right half of top face
+    cells.push(`<polygon points="${poly(cell(G.ctr, sub(G.ur, G.ctr), sub(G.ul, G.ctr), i, j))}" fill="${pick()}"/>`);
+  return realHalf(p) + `<g id="twin">${cells.join("")}</g>`;
+}
+// Option B kept as reference (interlocked twin rings).
+function tapered(cx, cy, R, a0, a1, w, fill, n = 72) {
+  const o = [], i = [];
+  for (let s = 0; s <= n; s++) { const t = s / n, a = (a0 + (a1 - a0) * t) * Math.PI / 180, ww = w * Math.sin(Math.PI * t);
+    o.push([cx + R * Math.cos(a), cy + R * Math.sin(a)]); i.push([cx + (R - ww) * Math.cos(a), cy + (R - ww) * Math.sin(a)]); }
+  return `<path d="M${o.concat(i.reverse()).map(([x, y]) => `${x.toFixed(2)},${y.toFixed(2)}`).join(" L")} Z" fill="${fill}"/>`;
+}
+function symB(p) {
+  const R = 25.5, a0 = -50 * Math.PI / 180, a1 = 255 * Math.PI / 180;
+  return `<g id="real">${tapered(33, 50, 27, 38, 322, 9, p.orange)}<circle cx="33" cy="50" r="8" fill="${p.blue}"/></g>` +
+    `<g id="model"><path d="M${(67 + R * Math.cos(a0)).toFixed(2)},${(50 + R * Math.sin(a0)).toFixed(2)} A${R},${R} 0 1 1 ` +
+    `${(67 + R * Math.cos(a1)).toFixed(2)},${(50 + R * Math.sin(a1)).toFixed(2)}" fill="none" stroke="${p.blue}" stroke-width="3.2" stroke-linecap="round"/>` +
+    `<circle cx="67" cy="50" r="6.6" fill="none" stroke="${p.orange}" stroke-width="2.8"/></g>`;
+}
+function wordmark(p, x = 112, y = 66, size = 56, sign = true) {
+  let t = `<text x="${x}" y="${y}" font-family="${FONT}" font-size="${size}"><tspan font-weight="700" fill="${p.word}">COD</tspan>` +
+          `<tspan font-weight="300" fill="${p.orange}">3S</tspan></text>`;
+  if (sign) t += `<text x="${x + size * 3.17}" y="${y + size * 0.42}" text-anchor="end" font-family="${FONT}" font-size="${size * 0.24}" letter-spacing="0.5" fill="${p.sign}">by EdgeMind</text>`;
+  return t;
+}
+const VARIANTS = { B: ["Anneaux jumeaux (référence)", symB], C1: ["Cube, jumeau en pointillés", symC1],
+                   C2: ["Cube, jumeau en nuée stochastique", symC2], C3: ["Cube, jumeau en pixels", symC3] };
+if (typeof module !== "undefined") module.exports = { PAL, FONT, G, rng, cloud, realHalf, symB, symC1, symC2, symC3, wordmark, VARIANTS, DIGITAL_EDGES, SEAM };
+
+const NS="http://www.w3.org/2000/svg";
+const hex=h=>[1,3,5].map(i=>parseInt(h.slice(i,i+2),16));
+const mix=(a,b,t)=>{const A=hex(a),B=hex(b);return"rgb("+A.map((v,i)=>Math.round(v+(B[i]-v)*t)).join(",")+")"};
+const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+const REF=7;let mode="light",seed=Math.floor(Math.random()*1e6),raf=null;
+const svg=document.getElementById("anim");
+function play(){
+  cancelAnimationFrame(raf);
+  const p=PAL[mode],r=rng(seed*7+3),parts=cloud(REF);
+  // Fixed final logo (reference draw); only the construction is random.
+  parts.forEach(q=>{let u=r(),v=r();if(u+v>1){u=1-u;v=1-v}const [A,B,C]=r()<0.6?[G.ll,G.ctr,G.bot]:[G.ul,G.ctr,G.ll];
+    q.ox=A[0]+(B[0]-A[0])*u+(C[0]-A[0])*v;q.oy=A[1]+(B[1]-A[1])*u+(C[1]-A[1])*v});
+  document.getElementById("seed").textContent="Logo de référence n° "+REF+" · construction n° "+seed;
+  svg.innerHTML=`<defs><filter id="glow" x="-2" y="-2" width="5" height="5"><feGaussianBlur stdDeviation="1.2"/></filter></defs>`+
+    `<g id="realg" opacity="0">${realHalf(p)}</g><g id="pts"></g><g id="pulses"></g><g transform="translate(-8,0)">${wordmark(p,104,66,56)}</g>`;
+  const g=svg.querySelector("#pts"),pg=svg.querySelector("#pulses"),real=svg.querySelector("#realg");
+  const els=parts.map(q=>{const c=document.createElementNS(NS,"circle");g.appendChild(c);
+    const mx=(q.ox+q.x)/2,my=(q.oy+q.y)/2,a=r()*Math.PI*2,amp=6+r()*16;
+    q.cx=mx+Math.cos(a)*amp;q.cy=my+Math.sin(a)*amp;
+    q.delay=q.kind==="node"?2300+r()*300:350+Math.pow(r(),0.8)*1700;q.dur=650+r()*900;q.flash=-1e9;q.target=p[q.col];return c});
+  const end=Math.max(...parts.map(q=>q.delay+q.dur));
+  const paths=[["ctr","ur"],["top","ur"],["bot","lr"],["ur","lr"],["top","ctr"],["ctr","bot"]];
+  const pulses=[];let nextPulse=end+200,t0=performance.now();
+  function frame(now){
+    const t=reduce?1e9:now-t0;
+    real.setAttribute("opacity",Math.min(1,t/400));
+    if(t>nextPulse){const [a,b]=paths[Math.floor(r()*paths.length)],f=r()<0.5;
+      const c=document.createElementNS(NS,"circle");c.setAttribute("r","1.8");c.setAttribute("fill",p.exch);c.setAttribute("filter","url(#glow)");pg.appendChild(c);
+      pulses.push({a:G[f?a:b],b:G[f?b:a],s:t,el:c});nextPulse=t+450+r()*700}
+    for(let i=pulses.length-1;i>=0;i--){const u=(t-pulses[i].s)/700;const P=pulses[i];
+      if(u>=1){P.el.remove();pulses.splice(i,1);continue}
+      P.x=P.a[0]+(P.b[0]-P.a[0])*u;P.y=P.a[1]+(P.b[1]-P.a[1])*u;P.el.setAttribute("cx",P.x);P.el.setAttribute("cy",P.y);P.el.setAttribute("opacity",Math.sin(Math.PI*u))}
+    parts.forEach((q,i)=>{const k=Math.max(0,Math.min(1,(t-q.delay)/q.dur)),e=1-Math.pow(1-k,3),c=els[i];
+      const x=(1-e)*(1-e)*q.ox+2*(1-e)*e*q.cx+e*e*q.x,y=(1-e)*(1-e)*q.oy+2*(1-e)*e*q.cy+e*e*q.y;
+      for(const P of pulses)if(P.x!==undefined&&Math.hypot(P.x-q.x,P.y-q.y)<3.4)q.flash=t;
+      const fl=Math.max(0,1-(t-q.flash)/550);
+      c.setAttribute("cx",x.toFixed(2));c.setAttribute("cy",y.toFixed(2));
+      c.setAttribute("r",(k===0?0:q.rad*Math.min(1,0.4+k)).toFixed(2));
+      c.setAttribute("fill",fl>0?mix(q.target,p.exch,fl):(e<1?mix(p.exch,q.target,e):q.target));
+      c.setAttribute("opacity",q.op)});
+    if(!reduce)raf=requestAnimationFrame(frame)}
+  raf=requestAnimationFrame(frame)}
+function grid(){const el=document.getElementById("grid");el.innerHTML="";
+  for(let i=0;i<6;i++){const s=Math.floor(Math.random()*1e6),d=document.createElement("div");d.className="cell";
+    d.innerHTML=`<svg viewBox="0 0 100 100">${symC2(PAL.light,s)}</svg>Tirage n° ${s}`;el.appendChild(d)}}
+document.getElementById("replay").onclick=play;
+document.getElementById("reseed").onclick=()=>{seed=Math.floor(Math.random()*1e6);play()};
+document.getElementById("theme").onclick=e=>{mode=mode==="light"?"dark":"light";document.getElementById("stage").classList.toggle("dark",mode==="dark");
+  e.target.textContent=mode==="light"?"Fond sombre":"Fond clair";play()};
+document.getElementById("regrid").onclick=grid;
+play();grid();
+</script></body></html>
