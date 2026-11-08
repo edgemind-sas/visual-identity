@@ -15,7 +15,7 @@ Les arêtes sont tracées à l'intérieur de la silhouette du cube : leur bord e
 
 ## Logotype
 
-« COD » en Open Sans Bold, bleu `#1F416D` (`#5B9BD5` sur fond sombre). « 3S » en Open Sans Light, orange `#EF7B26`. La signature « by EdgeMind » reprend le mot-symbole d'EdgeMind : « by » en Open Sans Regular, « Edge » en Bold et en bleu, « Mind » en Light et en orange.
+« COD » en Open Sans Bold, bleu `#1F416D` (`#5B9BD5` sur fond sombre). « 3S » en Open Sans Light, orange `#EF7B26`. La signature est « by » en Open Sans Regular, suivi du symbole EdgeMind (le cercle EM de `logos/logo_edgemind_only.svg`, aux couleurs de la charte). Elle fait 0,41 fois la hauteur du nom, se cale sur le bord droit du « S » et se place sous le nom. Dans le logo horizontal, le nom est centré sur le cube et la signature descend en dessous, comme sur la carte de connexion de la plateforme.
 
 Dans les fichiers à diffuser, le texte est vectorisé. `svg/cod3s_horizontal_light_source.svg` garde le texte modifiable.
 
@@ -49,6 +49,7 @@ Les sources sont dans `source/` :
 
 - `logo.js` : le générateur, utilisable sous Node comme dans un navigateur ;
 - `glyphs.py` : la vectorisation du texte depuis `font_opensans/` ;
+- `edgemind_symbol.json` : le symbole EdgeMind de la signature, tracés repris de `logos/logo_edgemind_only.svg` ;
 - `export_kit.cjs` : l'export de toutes les déclinaisons.
 
 ```bash
