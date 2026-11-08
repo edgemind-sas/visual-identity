@@ -1,7 +1,7 @@
 // COD3S logo generator: shared by the node exporter and the browser demo.
 const PAL = {
-  light: { blue: "#1F416D", mid: "#4F7DB5", orange: "#EF7B26", osoft: "#F5A76A", exch: "#4F7DB5", word: "#1F416D", sign: "#4F7DB5" },
-  dark: { blue: "#5B9BD5", mid: "#8FB3DC", orange: "#EF7B26", osoft: "#F5A76A", exch: "#8FB3DC", word: "#E6EAF0", sign: "#8FB3DC" },
+  light: { blue: "#1F416D", mid: "#4F7DB5", orange: "#EF7B26", osoft: "#F5A76A", exch: "#4F7DB5", word: "#1F416D", sign: "#4F7DB5", pulse: "#132A47" },
+  dark: { blue: "#5B9BD5", mid: "#8FB3DC", orange: "#EF7B26", osoft: "#F5A76A", exch: "#8FB3DC", word: "#5B9BD5", sign: "#8FB3DC", pulse: "#1F416D" },
 };
 const FONT = "'Open Sans', sans-serif";
 
@@ -75,6 +75,27 @@ function symC3(p, seed = 11) { // pixel mosaic on an isometric grid
     cells.push(`<polygon points="${poly(cell(G.ctr, sub(G.ur, G.ctr), sub(G.ul, G.ctr), i, j))}" fill="${pick()}"/>`);
   return realHalf(p) + `<g id="twin">${cells.join("")}</g>`;
 }
+// Wireframe twin (adopted 2026-11-08): solid orange edges drawn inside the right half,
+// so their outer border continues the blue half exactly. Five convex polygons: the four
+// sides of the right half's outline (seam included) and the diagonal ur-ctr.
+function twinFrame(W = 1.2) {
+  const outer = [G.top, G.ur, G.lr, G.bot];
+  const line = (a, b, d) => { const L = Math.hypot(b[0] - a[0], b[1] - a[1]); const n = [-(b[1] - a[1]) / L, (b[0] - a[0]) / L];
+    return [[a[0] + n[0] * d, a[1] + n[1] * d], [b[0] + n[0] * d, b[1] + n[1] * d]]; };
+  const cross = ([p1, p2], [p3, p4]) => { const d = (p1[0] - p2[0]) * (p3[1] - p4[1]) - (p1[1] - p2[1]) * (p3[0] - p4[0]);
+    const a = p1[0] * p2[1] - p1[1] * p2[0], b = p3[0] * p4[1] - p3[1] * p4[0];
+    return [(a * (p3[0] - p4[0]) - (p1[0] - p2[0]) * b) / d, (a * (p3[1] - p4[1]) - (p1[1] - p2[1]) * b) / d]; };
+  const inner = outer.map((p, i) => line(p, outer[(i + 1) % 4], W)); // clockwise on screen: the normal points inside
+  const I = outer.map((_, i) => cross(inner[(i + 3) % 4], inner[i]));
+  const sides = outer.map((p, i) => [p, outer[(i + 1) % 4], I[(i + 1) % 4], I[i]]);
+  const up = line(G.ur, G.ctr, W / 2), down = line(G.ur, G.ctr, -W / 2);
+  const diagonal = [cross(up, inner[0]), I[1], cross(down, inner[1]), cross(down, inner[3]), cross(up, inner[3])];
+  return [...sides, diagonal];
+}
+function symD(p, W = 1.2) {
+  return realHalf(p) + `<g id="twin" data-pulse-color="${p.pulse}">` +
+    twinFrame(W).map((q) => `<polygon points="${poly(q)}" fill="${p.orange}"/>`).join("") + "</g>";
+}
 // Option B kept as reference (interlocked twin rings).
 function tapered(cx, cy, R, a0, a1, w, fill, n = 72) {
   const o = [], i = [];
@@ -96,5 +117,6 @@ function wordmark(p, x = 112, y = 66, size = 56, sign = true) {
   return t;
 }
 const VARIANTS = { B: ["Anneaux jumeaux (référence)", symB], C1: ["Cube, jumeau en pointillés", symC1],
-                   C2: ["Cube, jumeau en nuée stochastique", symC2], C3: ["Cube, jumeau en pixels", symC3] };
-if (typeof module !== "undefined") module.exports = { PAL, FONT, G, rng, cloud, realHalf, symB, symC1, symC2, symC3, wordmark, VARIANTS, DIGITAL_EDGES, SEAM };
+                   C2: ["Cube, jumeau en nuée stochastique", symC2], C3: ["Cube, jumeau en pixels", symC3],
+                   D: ["Cube, jumeau en arêtes pleines (retenu)", symD] };
+if (typeof module !== "undefined") module.exports = { PAL, FONT, G, rng, cloud, realHalf, symB, symC1, symC2, symC3, symD, twinFrame, wordmark, VARIANTS, DIGITAL_EDGES, SEAM };
