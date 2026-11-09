@@ -13,13 +13,17 @@
 
 // Title-page block: optional image framed by partner logos.
 // n logos: ceil(n/2) in the left column and the rest in the right one, at most 4
-// per column; any remainder goes to a row below.
+// per column; any remainder goes to rows below. Without an image, every logo goes
+// to those rows, at most 4 per row.
 #let cover-block(img, img-width, logos, logo-height, logo-width) = {
   let logo(path) = box(width: logo-width, height: logo-height,
     align(center + horizon, image(path, width: 100%, height: 100%, fit: "contain")))
   let row(paths) = if paths.len() > 0 {
     v(0.6em)
-    stack(dir: ltr, spacing: 1.5em, ..paths.map(logo))
+    for k in range(0, paths.len(), step: 4) {
+      align(center, stack(dir: ltr, spacing: 1.5em, ..paths.slice(k, calc.min(k + 4, paths.len())).map(logo)))
+      v(0.8em, weak: true)
+    }
   }
   if img == none {
     return row(logos)
@@ -80,6 +84,11 @@
   // false moves the abstract to the top of the page after the title page,
   // for a title page already filled by an image and partner logos.
   abstract-on-cover: true,
+  // Optional executive summary ("Note de synthèse"): own page right after the
+  // title page (and the abstract, if moved there), ended by a page break so the
+  // table of contents starts on a fresh page.
+  synthesis: none,
+  synthesis-title: "Note de synthèse",
   title-image: none,
   title-image-width: 60%, // percentage of text width
 
@@ -390,6 +399,13 @@
   // Abstract moved off the title page: first thing of the main content
   if abstract != none and not abstract-on-cover {
     abstract-block(abstract)
+  }
+
+  // Executive summary on its own page; not numbered, not in the outline.
+  if synthesis != none {
+    heading(level: 1, numbering: none, outlined: false, synthesis-title)
+    synthesis
+    pagebreak(weak: true)
   }
 
   // Reset heading counter (in case document starts with H2)
